@@ -1,46 +1,38 @@
-import { Scene } from 'phaser';
+import { Scene } from "phaser";
 
-export class Preloader extends Scene
-{
-    constructor ()
-    {
-        super('Preloader');
-    }
+export class Preloader extends Scene {
+	constructor() {
+		super("Preloader");
+	}
 
-    init ()
-    {
-        //  We loaded this image in our Boot Scene, so we can display it here
-        this.add.image(512, 384, 'background');
+	preload() {
+		this.load.setPath("assets/");
 
-        //  A simple progress bar. This is the outline of the bar.
-        this.add.rectangle(512, 384, 468, 32).setStrokeStyle(1, 0xffffff);
+		this.load.image("volume-icon", "ui/volume-icon.png");
+		this.load.image("volume-icon_off", "ui/volume-icon_off.png");
 
-        //  This is the progress bar itself. It will increase in size from the left based on the % of progress.
-        const bar = this.add.rectangle(512-230, 384, 4, 28, 0xffffff);
+		this.load.audio("theme-song", "audio/fat-caps-audionatix.mp3");
+		this.load.audio("whoosh", "audio/whoosh.mp3");
+		this.load.audio("card-flip", "audio/card-flip.mp3");
+		this.load.audio("card-match", "audio/card-match.mp3");
+		this.load.audio("card-mismatch", "audio/card-mismatch.mp3");
+		this.load.audio("card-slide", "audio/card-slide.mp3");
+		this.load.audio("victory", "audio/victory.mp3");
+		this.load.image("background");
+		this.load.image("card-back", "cards/card-back.png");
+		this.load.image("card-0", "cards/card-0.png");
+		this.load.image("card-1", "cards/card-1.png");
+		this.load.image("card-2", "cards/card-2.png");
+		this.load.image("card-3", "cards/card-3.png");
+		this.load.image("card-4", "cards/card-4.png");
+		this.load.image("card-5", "cards/card-5.png");
+		this.load.image("card-6", "cards/card-6.png");
+		this.load.image("card-7", "cards/card-7.png");
 
-        //  Use the 'progress' event emitted by the LoaderPlugin to update the loading bar
-        this.load.on('progress', (progress: number) => {
+		this.load.image("heart", "ui/heart.png");
+	}
 
-            //  Update the progress bar (our bar is 464px wide, so 100% = 464px)
-            bar.width = 4 + (460 * progress);
-
-        });
-    }
-
-    preload ()
-    {
-        //  Load the assets for the game - Replace with your own assets
-        this.load.setPath('assets');
-
-        this.load.image('logo', 'logo.png');
-    }
-
-    create ()
-    {
-        //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
-        //  For example, you can define global animations here, so we can use them in other scenes.
-
-        //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-        this.scene.start('MainMenu');
-    }
+	create() {
+		this.scene.start("Play");
+	}
 }
