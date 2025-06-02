@@ -1,0 +1,19 @@
+{
+  "categories": ["Γλυκό", "Φρούτο","Κρέας"],
+  "items": [
+    { "name": "Σταφύλι", "image": "assets/food/fruits/grapes.png", "category": "Φρούτο" },
+    { "name": "Μήλο", "image": "assets/food/fruits/apple.png", "category": "Φρούτο" },
+    { "name": "Κεράσια", "image": "assets/food/fruits/cherries.png", "category": "Φρούτο" },
+    { "name": "Ανανάς", "image": "assets/food/fruits/pineapple.png", "category": "Φρούτο" },
+    { "name": "Αχλάδι", "image": "assets/food/fruits/pear.png", "category": "Φρούτο" },
+    { "name": "Μπριζόλα", "image": "assets/food/meat/meat-raw.png", "category": "Κρέας" },
+    { "name": "Γαλοπούλα", "image": "assets/food/meat/turkey.png", "category": "Κρέας" },
+    { "name": "Ντόνατ", "image": "assets/food/sweets/donut-sprinkles.png", "category": "Γλυκό" },
+    { "name": "Τηγανίτες", "image": "assets/food/sweets/pancakes.png", "category": "Γλυκό" },
+    { "name": "Κρουασάν", "image": "assets/food/sweets/croissant.png", "category": "Γλυκό" },
+    { "name": "Μπισκότο", "image": "assets/food/sweets/cookie.png", "category": "Γλυκό" },
+    { "name": "Παγωτό", "image": "assets/food/sweets/ice-cream.png", "category": "Γλυκό" },
+    { "name": "Μπέικον", "image": "assets/food/meat/bacon.png", "category": "Κρέας" },
+    { "name": "Λουκάνικο", "image": "assets/food/meat/meat-sausage.png", "category": "Κρέας" }
+  ]
+}
