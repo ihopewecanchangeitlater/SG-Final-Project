@@ -124,7 +124,7 @@ create() {
             .setData('category', item.category)
             .setInteractive({ draggable: true })
             .setName(item.name)
-            .setOrigin(0.5,0.2);
+            .setOrigin(0.5,0.1);
 
         // Ομοιόμορφη κλίμακα για όλα τα αντικείμενα
         const scale = Math.min(
@@ -148,8 +148,8 @@ create() {
       });
     });
 
-    const shelfY1 = 230;  // y-συντεταγμένη 1ου ραφιού
-    const shelfY2 = 360;  // y-συντεταγμένη 2ου ραφιού 
+    const shelfY1 = 240;  // y-συντεταγμένη 1ου ραφιού
+    const shelfY2 = 380;  // y-συντεταγμένη 2ου ραφιού 
 
     const shelf1 = this.add.image((width / 2), shelfY1, 'shelf').setOrigin(0.5, 0.5);
     shelf1.setDisplaySize(920, 40);  

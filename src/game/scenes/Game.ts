@@ -8,7 +8,7 @@ interface GameInfo {
 
 export class Game extends Scene {
     private games: GameInfo[] = [
-        { key: 'DragToCategory', name: 'Βρες την Κατηγορία', levels: ['level-01', 'level-02'] },
+        { key: 'DragToCategory', name: 'Βρες την Κατηγορία', levels: ['level-01', 'level-02','level-03'] },
         // πρόσθεσε και άλλα παιχνίδια εδώ...
     ];
 
