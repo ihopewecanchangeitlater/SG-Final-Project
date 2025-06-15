@@ -62,6 +62,8 @@ export class Play extends Scene {
 		rows: 0,
 		cols: 0,
 	};
+	
+	helpPanelOpen = false;
 
 	constructor() {
 		super({
@@ -233,6 +235,100 @@ export class Play extends Scene {
 		});
 	}
 
+	showHelpPanel() {
+		if (this.helpPanelOpen) return;
+		this.helpPanelOpen = true;
+
+		const panelWidth = 500;
+		const panelHeight = 280;
+		const panelX = this.scale.width / 2;
+		const panelY = this.scale.height / 2;
+
+		// Δημιουργία στρογγυλεμένου παραθύρου με σκιά
+		const panel = this.add.graphics().setDepth(2000);
+
+		// Σκιά
+		panel.fillStyle(0x000000, 0.4);
+		panel.fillRoundedRect(
+			panelX - panelWidth / 2 + 4,
+			panelY - panelHeight / 2 + 4,
+			panelWidth,
+			panelHeight,
+			20
+		);
+
+		// Κύριο σώμα παραθύρου
+		panel.fillStyle(0x222222, 0.95);
+		panel.fillRoundedRect(
+			panelX - panelWidth / 2,
+			panelY - panelHeight / 2,
+			panelWidth,
+			panelHeight,
+			20
+		);
+
+		// Κείμενο βοήθειας
+		const helpText = this.add
+			.text(
+				panelX,
+				panelY,
+				"Ανακάλυψε τα ζευγάρια καρτών\nκαι διασκέδασε μαθαίνοντας!\n\nΑν κάνεις λάθος, μην ανησυχείς, \nμπορείς πάντα να προσπαθήσεις ξανά!",
+				{
+					fontSize: "20px",
+					fontFamily: "Arial",
+					color: "#ffffff",
+					align: "center",
+					wordWrap: { width: 420 },
+					lineSpacing: 8,
+				}
+			)
+			.setOrigin(0.5)
+			.setDepth(2001);
+
+		// Κουμπί κλεισίματος
+		const closeButton = this.add
+			.text(panelX + panelWidth / 2 - 16, panelY - panelHeight / 2 + 16, "✕", {
+				fontSize: "24px",
+				fontFamily: "Arial",
+				color: "#ffffff",
+				backgroundColor: "#cc3333",
+				padding: { left: 10, right: 10, top: 4, bottom: 4 },
+			})
+			.setOrigin(1, 0)
+			.setInteractive({ useHandCursor: true })
+			.setDepth(2002);
+
+		closeButton.on("pointerover", () =>
+			closeButton.setStyle({ backgroundColor: "#ff4444" })
+		);
+		closeButton.on("pointerout", () =>
+			closeButton.setStyle({ backgroundColor: "#cc3333" })
+		);
+
+		// Κλείσιμο παραθύρου
+		closeButton.on("pointerdown", () => {
+			panel.destroy();
+			helpText.destroy();
+			closeButton.destroy();
+			this.helpPanelOpen = false;
+		});
+	}
+
+	createHelpIcon() {
+		const helpIcon = this.add
+			.text(this.scale.width - 3, 5, "?", {
+				fontSize: "24px",
+				color: "#ffffff",
+				backgroundColor: "#5c7fd6",
+				padding: { x: 10, y: 5 },
+			})
+			.setOrigin(1, 0)
+			.setDepth(1000)
+			.setInteractive({ useHandCursor: true });
+
+		helpIcon.on("pointerdown", () => this.showHelpPanel());
+	}
+
 	volumeButton(): void {
 		const volumeIcon = this.add
 			.image(25, 25, "volume-icon")
@@ -245,7 +341,6 @@ export class Play extends Scene {
 		});
 		// Mouse leave
 		volumeIcon.on(Phaser.Input.Events.POINTER_OUT, () => {
-			console.log("Mouse leave");
 			this.input.setDefaultCursor("default");
 		});
 
@@ -262,7 +357,26 @@ export class Play extends Scene {
 		});
 	}
 
+	backButton(): void {
+		const mainMenuButton = this.add
+			.image(25, 70, "back-button")
+			.setName("back-button")
+			.setInteractive();
+
+		mainMenuButton.on(Phaser.Input.Events.POINTER_OVER, () => {
+			this.input.setDefaultCursor("pointer");
+		});
+		mainMenuButton.on(Phaser.Input.Events.POINTER_OUT, () => {
+			this.input.setDefaultCursor("default");
+		});
+		mainMenuButton.on(Phaser.Input.Events.POINTER_DOWN, () => {
+			this.sound.play("whoosh", { volume: 1.3 });
+			this.scene.restart();
+		});
+	}
+
 	selectDifficulty(): void {
+		this.backButton();
 		// Keep references to all buttons
 		const difficulties = ["Easy", "Medium", "Hard", "Expert"];
 		const buttons: GameObjects.Text[] = []; // Store all button references
@@ -332,6 +446,8 @@ export class Play extends Scene {
 	}
 
 	startGame() {
+		this.createHelpIcon();
+
 		// Background image
 		const bg = this.add
 			.image(

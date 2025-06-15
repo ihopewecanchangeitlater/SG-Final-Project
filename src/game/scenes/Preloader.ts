@@ -8,9 +8,6 @@ export class Preloader extends Scene {
 	preload() {
 		this.load.setPath("assets/");
 
-		this.load.image("volume-icon", "ui/volume-icon.png");
-		this.load.image("volume-icon_off", "ui/volume-icon_off.png");
-
 		this.load.audio("theme-song", "audio/fat-caps-audionatix.mp3");
 		this.load.audio("whoosh", "audio/whoosh.mp3");
 		this.load.audio("card-flip", "audio/card-flip.mp3");
@@ -18,6 +15,7 @@ export class Preloader extends Scene {
 		this.load.audio("card-mismatch", "audio/card-mismatch.mp3");
 		this.load.audio("card-slide", "audio/card-slide.mp3");
 		this.load.audio("victory", "audio/victory.mp3");
+		
 		this.load.image("background");
 		this.load.image("card-back", "cards/card-back.png");
 		this.load.image("card-0", "cards/card-0.png");
@@ -29,7 +27,10 @@ export class Preloader extends Scene {
 		this.load.image("card-6", "cards/card-6.png");
 		this.load.image("card-7", "cards/card-7.png");
 
+		this.load.image("volume-icon", "ui/volume-icon.png");
+		this.load.image("volume-icon_off", "ui/volume-icon_off.png");
 		this.load.image("heart", "ui/heart.png");
+		this.load.image("back-button", "ui/back-button.png");
 	}
 
 	create() {
