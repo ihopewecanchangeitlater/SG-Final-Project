@@ -1,9 +1,9 @@
-import { Boot } from './scenes/Boot';
-import { GameOver } from './scenes/GameOver';
-import { Game as MainGame } from './scenes/Game';
-import { MainMenu } from './scenes/MainMenu';
+import { Boot } from './scenes/stathis/Boot';
+import { GameOver } from './scenes/stathis/GameOver';
+import { Game as MainGame } from './scenes/stathis/Game';
+import { MainMenu } from './scenes/stathis/MainMenu';
 import { AUTO, Game } from 'phaser';
-import { Preloader } from './scenes/Preloader';
+import { Preloader } from './scenes/stathis/Preloader';
 import NameThePictureScene from './scenes/NameThePictureScene';
 
 //  Find out more information about the Game Config at:
