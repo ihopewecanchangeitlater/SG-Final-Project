@@ -1,11 +1,10 @@
-import { Boot } from './Boot';
-import { GameOver } from './GameOver';
-import { Game as MainGame } from './stathis/Game';
-import { MainMenu } from './MainMenu';
+import { Boot } from './scenes/Boot';
+import { GameOver } from './scenes/GameOver';
+import { MainMenu } from './scenes/MainMenu';
 import { AUTO, Game } from 'phaser';
 
 
-import { Preloader } from './Preloader';
+import { Preloader } from './scenes/Preloader';
 
 //  Find out more information about the Game Config at:
 //  https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
@@ -18,8 +17,8 @@ const config: Phaser.Types.Core.GameConfig = {
     scene: [
         Boot,
         Preloader,
+        Game,
         MainMenu,
-        MainGame,
         GameOver
     ]
 };
