@@ -1,6 +1,6 @@
-import { Play } from "./scenes/Play";
+import { Play } from "./scenes/Konstantinos/Play";
 import { AUTO, Game } from "phaser";
-import { Preloader } from "./scenes/Preloader";
+import { Preloader } from "./scenes/Konstantinos/Preloader";
 
 //  Find out more information about the Game Config at:
 //  https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
