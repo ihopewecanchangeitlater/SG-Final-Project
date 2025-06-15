@@ -89,7 +89,7 @@ export class NameThePictureScene extends Phaser.Scene {
     //init() {
     init(data: { level?: string } = {}) {
         this.levelKey = data.level;
-        
+
         this.gameEnded = false;
         this.score = 0;
         this.itemsToDisplayThisRound = [];
@@ -455,7 +455,7 @@ export class NameThePictureScene extends Phaser.Scene {
         closeButton.on(Phaser.Input.Events.POINTER_DOWN, () => {
             if (this.feedbackPopup && this.feedbackPopup.scene) this.feedbackPopup.destroy();
             this.feedbackPopup = null;
-            this.scene.start('MainMenu');
+            this.scene.start('Game');
         });
         this.feedbackPopup.add(closeButton);
     }
