@@ -91,7 +91,7 @@ export class FindThePairs extends Scene {
 		this.load.audio("card-slide", "card-slide.mp3");
 		this.load.audio("victory", "victory.mp3");
 
-		this.load.setPath(`${import.meta.env.BASE_URL}/assets/cards`);
+		this.load.setPath(`${import.meta.env.BASE_URL}/assets/images/cards`);
 		this.load.image("card-back", "card-back.png");
 		this.cardNames.forEach((cardName) => {
 			this.load.image(cardName, `${cardName}.png`);
