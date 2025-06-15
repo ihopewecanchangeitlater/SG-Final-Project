@@ -5,6 +5,9 @@ import { AUTO, Game } from 'phaser';
 
 
 import { Preloader } from './scenes/Preloader';
+import { DragToCategory } from './scenes/DragToCategory';
+import { NameThePictureScene } from './scenes/NameThePictureScene';
+import { FindThePairs } from './scenes/FindThePairs';
 
 //  Find out more information about the Game Config at:
 //  https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
@@ -18,6 +21,9 @@ const config: Phaser.Types.Core.GameConfig = {
         Boot,
         Preloader,
         Game,
+        DragToCategory,
+        FindThePairs,
+        NameThePictureScene,
         MainMenu,
         GameOver
     ]
