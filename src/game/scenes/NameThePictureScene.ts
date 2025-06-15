@@ -68,7 +68,7 @@ const IMAGE_DISPLAY_WIDTH = 140;
 const IMAGE_BORDER_PADDING = 4;  
 
 
-export default class NameThePictureScene extends Phaser.Scene {
+export class NameThePictureScene extends Phaser.Scene {
     private itemsToDisplayThisRound: ItemData[] = []; 
     private selectedAnswers: { [key: number]: string | null } = {};
     private itemElements: ItemElement[] = [];
