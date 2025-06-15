@@ -11,7 +11,7 @@ type Heart = GameObjects.Image;
 type CardList = Card[];
 type HeartList = Heart[];
 
-export class Play extends Scene {
+export class FindThePairs extends Scene {
 	// All cards names
 	cardNames = [
 		"card-0",
