@@ -35,8 +35,8 @@ export class DragToCategory extends Scene {
 
 preload() {
   // 1. Φορτώνουμε βασικά assets (ήχοι, icons)
-  this.load.image('basket', 'assets/objects/basket.png');
-  this.load.image('shelf', 'assets/objects/shelf.png');
+  this.load.image('basket', 'assets/images/objects/basket.png');
+  this.load.image('shelf', 'assets/images/objects/shelf.png');
   this.load.image('soundOn', 'assets/ui/volume-icon.png');
   this.load.image('soundOff', 'assets/ui/volume-icon_off.png');
   this.load.audio('correct', 'assets/audio/correct.mp3');
