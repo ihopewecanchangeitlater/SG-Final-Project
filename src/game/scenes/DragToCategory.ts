@@ -52,7 +52,7 @@ export class DragToCategory extends Scene {
 
 			if (!this.levelData) {
 				console.error("Level data not found");
-				this.scene.start("MainMenu");
+				this.scene.start("Game");
 				return;
 			}
 
@@ -495,7 +495,7 @@ export class DragToCategory extends Scene {
 		this.time.delayedCall(5000, () => {
 			panel.destroy();
 			text.destroy();
-			this.scene.start("MainMenu");
+			this.scene.start("Game");
 		});
 	}
 
@@ -520,7 +520,7 @@ export class DragToCategory extends Scene {
 		);
 
 		exitButton.on("pointerdown", () => {
-			this.scene.start("MainMenu");
+			this.scene.start("Game");
 		});
 	}
 }
