@@ -37,10 +37,10 @@ export class FindThePairs extends Scene {
 
 	// Grid configuration
 	gridConfiguration = {
-		x: 113,
-		y: 102,
-		paddingX: 10,
-		paddingY: 10,
+		x: 200, // or 150–250 based on your visual layout
+		y: 150,
+		paddingX: 20,
+		paddingY: 20,
 	};
 
 	// Main title properties
@@ -66,119 +66,247 @@ export class FindThePairs extends Scene {
 
 	helpPanelOpen = false;
 
+	mute = false;
+
 	constructor() {
 		super({
 			key: "FindThePairs",
 		});
 	}
 
-levelKey?: string;
-
-init(data: { level: string }) {
-	if (data.level) {
-		this.levelKey = data.level;
+	init(data: { level: string }) {
+		this.cameras.main.fadeIn(500);
+		if (data.level) {
+			this.selectedDifficulty = this.difficultySettings[data.level];
+		}
 	}
-	this.cameras.main.fadeIn(500);
-	this.volumeButton();
-}
-
 
 	preload() {
-		this.load.setPath("assets/");
+		this.load.setPath("assets/audio");
+		this.load.audio("theme-song", "fat-caps-audionatix.mp3");
+		this.load.audio("whoosh", "whoosh.mp3");
+		this.load.audio("card-flip", "card-flip.mp3");
+		this.load.audio("card-match", "card-match.mp3");
+		this.load.audio("card-mismatch", "card-mismatch.mp3");
+		this.load.audio("card-slide", "card-slide.mp3");
+		this.load.audio("victory", "victory.mp3");
 
-		this.load.audio("theme-song", "audio/fat-caps-audionatix.mp3");
-		this.load.audio("whoosh", "audio/whoosh.mp3");
-		this.load.audio("card-flip", "audio/card-flip.mp3");
-		this.load.audio("card-match", "audio/card-match.mp3");
-		this.load.audio("card-mismatch", "audio/card-mismatch.mp3");
-		this.load.audio("card-slide", "audio/card-slide.mp3");
-		this.load.audio("victory", "audio/victory.mp3");
+		this.load.setPath("assets/images/cards");
+		this.load.image("card-back", "card-back.png");
+		this.cardNames.forEach((cardName) => {
+			this.load.image(cardName, `${cardName}.png`);
+		});
 
-		this.load.image("card-back", "images/cards/card-back.png");
-		this.load.image("card-0", "images/cards/card-0.png");
-		this.load.image("card-1", "images/cards/card-1.png");
-		this.load.image("card-2", "images/cards/card-2.png");
-		this.load.image("card-3", "images/cards/card-3.png");
-		this.load.image("card-4", "images/cards/card-4.png");
-		this.load.image("card-5", "images/cards/card-5.png");
-		this.load.image("card-6", "images/cards/card-6.png");
-		this.load.image("card-7", "images/cards/card-7.png");
-
-		this.load.image("ftp-background", "ui/ftp-background.png");
-		this.load.image("volume-icon", "ui/volume-icon.png");
-		this.load.image("volume-icon_off", "ui/volume-icon_off.png");
-		this.load.image("heart", "ui/heart.png");
-		this.load.image("back-button", "ui/back-button.png");
+		this.load.setPath("assets/ui");
+		// this.load.image("ftp-background", "ftp-background.png");
+		this.load.image("volume-icon", "volume-icon.png");
+		this.load.image("volume-icon_off", "volume-icon_off.png");
+		this.load.image("heart", "heart.png");
+		this.load.image("back-button", "back-button.png");
 	}
 
-	create(): void {
-		// Αν έχουμε levelKey, ξεκινάμε κατευθείαν το παιχνίδι
-		if (this.levelKey) {
-			switch (this.levelKey) {
-				case 'level-01':
-					this.selectedDifficulty = this.difficultySettings['Easy'];
-					break;
-				case 'level-02':
-					this.selectedDifficulty = this.difficultySettings['Medium'];
-					break;
-				case 'level-03':
-					this.selectedDifficulty = this.difficultySettings['Hard'];
-					break;
-				case 'level-04':
-					this.selectedDifficulty = this.difficultySettings['Expert'];
-					break;
-				default:
-					this.selectedDifficulty = this.difficultySettings['Easy'];
-			}
-			this.startGame();
-			return; // Τερματίζουμε το υπόλοιπο της create
-		}
+	create() {
+		this.createHelpIcon();
+		this.backButton();
+		this.volumeButton();
 
-		const titleText = this.add
-			.text(
-				this.sys.game.scale.width / 2,
-				this.sys.game.scale.height / 2,
-				"Memory Card Game\nClick to Play",
-				{
-					align: "center",
-					fontSize: 40,
-					fontStyle: "bold",
-					color: this.mainTitleColor,
-				}
-			)
-			.setStroke(this.mainTitleStrokeColor, this.strokeWidth)
+		// WinnerText and GameOverText
+		const winnerText = this.add
+			.text(this.sys.game.scale.width / 2, -1000, "YOU WON", {
+				align: "center",
+				strokeThickness: 4,
+				fontSize: 40,
+				fontStyle: "bold",
+				color: "#8c7ae6",
+			})
 			.setOrigin(0.5)
 			.setDepth(3)
 			.setInteractive();
 
-		// Text Events
-		titleText.on(Phaser.Input.Events.POINTER_OVER, () => {
-			titleText.setColor(this.hilightedTitleColor);
-			titleText.setStroke(this.hilightedStrokeColor, this.strokeWidth);
+		const gameOverText = this.add
+			.text(
+				this.sys.game.scale.width / 2,
+				-1000,
+				"GAME OVER\nClick to restart",
+				{
+					align: "center",
+					strokeThickness: 4,
+					fontSize: 40,
+					fontStyle: "bold",
+					color: "#ff0000",
+				}
+			)
+			.setName("gameOverText")
+			.setDepth(3)
+			.setOrigin(0.5)
+			.setInteractive();
+
+		// Set lives
+		this.lives = this.selectedDifficulty.lives;
+
+		// Start lifes images
+		const hearts = this.createHearts();
+
+		// Create a grid of cards
+		this.cards = this.createGridCards();
+		this.cards.forEach((card) => {
+			card.gameObject.on(Phaser.Input.Events.POINTER_OVER, () => {
+				this.input.setDefaultCursor("pointer");
+			});
+			card.gameObject.on(Phaser.Input.Events.POINTER_OUT, () => {
+				this.input.setDefaultCursor("default");
+			});
+			card.gameObject.on(Phaser.Input.Events.POINTER_DOWN, () => {
+				this.gameLogic(card, hearts, gameOverText);
+			});
+		});
+
+		// Start canMove
+		this.time.addEvent({
+			delay: 200 * this.cards.length,
+			callback: () => {
+				this.canMove = true;
+			},
+		});
+
+		// Text events
+		winnerText.on(Phaser.Input.Events.POINTER_OVER, () => {
+			winnerText.setColor("#FF7F50");
 			this.input.setDefaultCursor("pointer");
 		});
-		titleText.on(Phaser.Input.Events.POINTER_OUT, () => {
-			titleText.setColor(this.mainTitleColor);
-			titleText.setStroke(this.mainTitleStrokeColor, this.strokeWidth);
+		winnerText.on(Phaser.Input.Events.POINTER_OUT, () => {
+			winnerText.setColor("#8c7ae6");
 			this.input.setDefaultCursor("default");
 		});
-		titleText.on(Phaser.Input.Events.POINTER_DOWN, () => {
+		winnerText.on(Phaser.Input.Events.POINTER_DOWN, () => {
 			this.sound.play("whoosh", { volume: 1.3 });
 			this.add.tween({
-				targets: titleText,
+				targets: winnerText,
 				ease: Phaser.Math.Easing.Bounce.InOut,
 				y: -1000,
 				onComplete: () => {
-					if (!this.sound.get("theme-song")) {
-						this.sound.play("theme-song", {
-							loop: true,
-							volume: 0.5,
-						});
-					}
-					this.selectDifficulty();
+					this.restartGame();
 				},
 			});
 		});
+
+		gameOverText.on(Phaser.Input.Events.POINTER_OVER, () => {
+			gameOverText.setColor("#FF7F50");
+			this.input.setDefaultCursor("pointer");
+		});
+
+		gameOverText.on(Phaser.Input.Events.POINTER_OUT, () => {
+			gameOverText.setColor("#8c7ae6");
+			this.input.setDefaultCursor("default");
+		});
+
+		gameOverText.on(Phaser.Input.Events.POINTER_DOWN, () => {
+			this.add.tween({
+				targets: gameOverText,
+				ease: Phaser.Math.Easing.Bounce.InOut,
+				y: -1000,
+				onComplete: () => {
+					this.restartGame();
+				},
+			});
+		});
+	}
+
+	gameLogic(
+		card: Card,
+		hearts: HeartList,
+		gameOverText: GameObjects.Text
+	): void {
+		this.canMove = false;
+
+		// Detect if there is a card opened
+		if (this.cardOpened !== undefined) {
+			// If the card is the same that the opened not do anything
+			if (
+				this.cardOpened.gameObject.x === card.gameObject.x &&
+				this.cardOpened.gameObject.y === card.gameObject.y
+			) {
+				this.canMove = true;
+				return;
+			}
+
+			card.flip(() => {
+				if (this.cardOpened?.cardName === card.cardName) {
+					// ------- Match -------
+					this.sound.play("card-match");
+					// Destroy card selected and card opened from history
+					this.cardOpened.destroy();
+					card.destroy();
+
+					// remove card destroyed from array
+					this.cards = this.cards.filter(
+						(cardLocal) => cardLocal.cardName !== card.cardName
+					);
+					// reset history card opened
+					this.cardOpened = undefined;
+					this.canMove = true;
+				} else {
+					// ------- No match -------
+					this.sound.play("card-mismatch");
+					this.cameras.main.shake(600, 0.01);
+					// remove life and heart
+					const lastHeart = hearts[hearts.length - 1];
+					this.add.tween({
+						targets: lastHeart,
+						ease: Phaser.Math.Easing.Expo.InOut,
+						duration: 1000,
+						y: -1000,
+						onComplete: () => {
+							lastHeart.destroy();
+							hearts.pop();
+						},
+					});
+					this.lives -= 1;
+					// Flip last card selected and flip the card opened from history and reset history
+					card.flip();
+					this.cardOpened?.flip(() => {
+						this.cardOpened = undefined;
+						this.canMove = true;
+					});
+				}
+
+				// Check if the game is over
+				if (this.lives === 0) {
+					// Show Game Over text
+					this.sound.play("whoosh", { volume: 1.3 });
+					this.add.tween({
+						targets: gameOverText,
+						ease: Phaser.Math.Easing.Bounce.Out,
+						y: this.sys.game.scale.height / 2,
+					});
+
+					this.canMove = false;
+				}
+
+				// Check if the game is won
+				if (this.cards.length === 0) {
+					this.sound.play("whoosh", { volume: 1.3 });
+					this.sound.play("victory");
+
+					this.add.tween({
+						targets: winnerText,
+						ease: Phaser.Math.Easing.Bounce.Out,
+						y: this.sys.game.scale.height / 2,
+					});
+					this.canMove = false;
+				}
+			});
+		} else if (
+			this.cardOpened === undefined &&
+			this.lives > 0 &&
+			this.cards.length > 0
+		) {
+			// If there is not a card opened save the card selected
+			card.flip(() => {
+				this.canMove = true;
+			});
+			this.cardOpened = card;
+		}
 	}
 
 	restartGame(): void {
@@ -220,11 +348,11 @@ init(data: { level: string }) {
 			...slicedCards,
 		]);
 
-		const baseCardWidth = 99;
-		const baseCardHeight = 128;
+		const baseCardWidth = 158;
+		const baseCardHeight = 204;
 
-		const availableWidth = 450;
-		const availableHeight = 430;
+		const availableWidth = 800;
+		const availableHeight = 600;
 
 		const scaleFactor = 0.85;
 
@@ -275,18 +403,20 @@ init(data: { level: string }) {
 	}
 
 	createHearts(): HeartList {
-		const offset = (10 - this.lives) * 31 * 0.5;
+		const margin = 50;
+		const centerX = this.sys.game.scale.width / 2;
+		const startX =
+			centerX - (this.selectedDifficulty.lives * margin) / 2 + margin / 2;
 		return Array.from(new Array(this.lives)).map((_, index) => {
 			const heart = this.add
 				.image(this.sys.game.scale.width + 1000, 20, "heart")
 				.setScale(2);
-
 			this.add.tween({
 				targets: heart,
 				ease: Phaser.Math.Easing.Expo.InOut,
 				duration: 1000,
 				delay: 1000 + index * 200,
-				x: 140 + offset + 30 * index, // marginLeft + spaceBetween * index
+				x: startX + index * margin,
 			});
 			return heart;
 		});
@@ -373,8 +503,8 @@ init(data: { level: string }) {
 
 	createHelpIcon() {
 		const helpIcon = this.add
-			.text(this.scale.width - 3, 5, "?", {
-				fontSize: "24px",
+			.text(this.scale.width - 10, 5, "?", {
+				fontSize: "32px",
 				color: "#ffffff",
 				backgroundColor: "#5c7fd6",
 				padding: { x: 10, y: 5 },
@@ -388,7 +518,7 @@ init(data: { level: string }) {
 
 	volumeButton(): void {
 		const volumeIcon = this.add
-			.image(25, 25, "volume-icon")
+			.image(25, 40, "volume-icon")
 			.setName("volume-icon");
 		volumeIcon.setInteractive();
 
@@ -396,27 +526,30 @@ init(data: { level: string }) {
 		volumeIcon.on(Phaser.Input.Events.POINTER_OVER, () => {
 			this.input.setDefaultCursor("pointer");
 		});
+
 		// Mouse leave
 		volumeIcon.on(Phaser.Input.Events.POINTER_OUT, () => {
 			this.input.setDefaultCursor("default");
 		});
 
 		volumeIcon.on(Phaser.Input.Events.POINTER_DOWN, () => {
-			if (this.sound.volume === 0) {
+			if (this.mute) {
 				this.sound.setVolume(1);
 				volumeIcon.setTexture("volume-icon");
 				volumeIcon.setAlpha(1);
+				this.mute = false;
 			} else {
 				this.sound.setVolume(0);
 				volumeIcon.setTexture("volume-icon_off");
 				volumeIcon.setAlpha(0.5);
+				this.mute = true;
 			}
 		});
 	}
 
 	backButton(): void {
 		const mainMenuButton = this.add
-			.image(25, 70, "back-button")
+			.image(25, 100, "back-button")
 			.setName("back-button")
 			.setInteractive();
 
@@ -428,299 +561,7 @@ init(data: { level: string }) {
 		});
 		mainMenuButton.on(Phaser.Input.Events.POINTER_DOWN, () => {
 			this.sound.play("whoosh", { volume: 1.3 });
-			this.scene.restart();
-		});
-	}
-
-	selectDifficulty(): void {
-		this.backButton();
-		// Keep references to all buttons
-		const difficulties = ["Easy", "Medium", "Hard", "Expert"];
-		const buttons: GameObjects.Text[] = []; // Store all button references
-
-		difficulties.forEach((level, index) => {
-			const yPosition = 200 + index * 60;
-			const button = this.add
-				.text(this.sys.game.scale.width / 2, yPosition, level, {
-					fontSize: 32,
-					color: "#ffffff",
-					backgroundColor: "#000000",
-					padding: { x: 10, y: 5 },
-				})
-				.setOrigin(0.5)
-				.setInteractive();
-
-			buttons.push(button); // Store reference
-
-			button.on(Phaser.Input.Events.POINTER_OVER, () => {
-				button.setStyle({ fill: "#f39c12" });
-				this.input.setDefaultCursor("pointer");
-			});
-
-			button.on(Phaser.Input.Events.POINTER_OUT, () => {
-				button.setStyle({ fill: "#ffffff" });
-				this.input.setDefaultCursor("default");
-			});
-
-			button.on(Phaser.Input.Events.POINTER_DOWN, () => {
-				this.selectedDifficulty = this.difficultySettings[level];
-				this.sound.play("whoosh", { volume: 1.3 });
-
-				// Disable all buttons from further input
-				buttons.forEach((btn) => btn.disableInteractive());
-
-				// Animate the selected one
-				this.add.tween({
-					targets: button,
-					ease: Phaser.Math.Easing.Bounce.InOut,
-					y: -1000,
-				});
-
-				// Hide or fade out others
-				buttons.forEach((btn) => {
-					if (btn !== button) {
-						this.add.tween({
-							targets: btn,
-							alpha: 0,
-							duration: 300,
-							onComplete: () => btn.setVisible(false),
-						});
-					}
-				});
-
-				// Start game after short delay
-				this.time.delayedCall(600, () => {
-					if (!this.sound.get("theme-song")) {
-						this.sound.play("theme-song", {
-							loop: true,
-							volume: 0.5,
-						});
-					}
-					this.startGame();
-				});
-			});
-		});
-	}
-
-	startGame() {
-		this.createHelpIcon();
-
-		// Background image
-		const bg = this.add
-			.image(
-				this.gridConfiguration.x - 63,
-				this.gridConfiguration.y - 77,
-				"ftp-background"
-			)
-			.setOrigin(0)
-			.setAlpha(0)
-			.setBlendMode(Phaser.BlendModes.SCREEN);
-
-		// WinnerText and GameOverText
-		const winnerText = this.add
-			.text(this.sys.game.scale.width / 2, -1000, "YOU WON", {
-				align: "center",
-				strokeThickness: 4,
-				fontSize: 40,
-				fontStyle: "bold",
-				color: "#8c7ae6",
-			})
-			.setOrigin(0.5)
-			.setDepth(3)
-			.setInteractive();
-
-		const gameOverText = this.add
-			.text(
-				this.sys.game.scale.width / 2,
-				-1000,
-				"GAME OVER\nClick to restart",
-				{
-					align: "center",
-					strokeThickness: 4,
-					fontSize: 40,
-					fontStyle: "bold",
-					color: "#ff0000",
-				}
-			)
-			.setName("gameOverText")
-			.setDepth(3)
-			.setOrigin(0.5)
-			.setInteractive();
-
-		// Set lives
-		this.lives = this.selectedDifficulty.lives;
-
-		// Start lifes images
-		const hearts = this.createHearts();
-
-		// Create a grid of cards
-		this.cards = this.createGridCards();
-
-		// Start canMove
-		this.time.addEvent({
-			delay: 200 * this.cards.length,
-			callback: () => {
-				this.canMove = true;
-			},
-		});
-
-		// Show background
-		this.add.tween({
-			targets: bg,
-			alpha: 1,
-			duration: 800,
-			ease: Phaser.Math.Easing.Quadratic.Out,
-		});
-
-		// Game Logic
-		this.input.on(Phaser.Input.Events.POINTER_MOVE, (pointer: any) => {
-			if (this.canMove) {
-				const card = this.cards.find((card) =>
-					card.gameObject.hasFaceAt(pointer.x, pointer.y)
-				);
-				this.input.setDefaultCursor(card ? "pointer" : "default");
-			}
-		});
-		this.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer: any) => {
-			if (this.canMove && this.cards.length) {
-				const card = this.cards.find((card) =>
-					card.gameObject.hasFaceAt(pointer.x, pointer.y)
-				);
-				if (card) {
-					this.canMove = false;
-
-					// Detect if there is a card opened
-					if (this.cardOpened !== undefined) {
-						// If the card is the same that the opened not do anything
-						if (
-							this.cardOpened.gameObject.x === card.gameObject.x &&
-							this.cardOpened.gameObject.y === card.gameObject.y
-						) {
-							this.canMove = true;
-							return false;
-						}
-
-						card.flip(() => {
-							if (this.cardOpened?.cardName === card.cardName) {
-								// ------- Match -------
-								this.sound.play("card-match");
-								// Destroy card selected and card opened from history
-								this.cardOpened.destroy();
-								card.destroy();
-
-								// remove card destroyed from array
-								this.cards = this.cards.filter(
-									(cardLocal) => cardLocal.cardName !== card.cardName
-								);
-								// reset history card opened
-								this.cardOpened = undefined;
-								this.canMove = true;
-							} else {
-								// ------- No match -------
-								this.sound.play("card-mismatch");
-								this.cameras.main.shake(600, 0.01);
-								// remove life and heart
-								const lastHeart = hearts[hearts.length - 1];
-								this.add.tween({
-									targets: lastHeart,
-									ease: Phaser.Math.Easing.Expo.InOut,
-									duration: 1000,
-									y: -1000,
-									onComplete: () => {
-										lastHeart.destroy();
-										hearts.pop();
-									},
-								});
-								this.lives -= 1;
-								// Flip last card selected and flip the card opened from history and reset history
-								card.flip();
-								this.cardOpened?.flip(() => {
-									this.cardOpened = undefined;
-									this.canMove = true;
-								});
-							}
-
-							// Check if the game is over
-							if (this.lives === 0) {
-								// Show Game Over text
-								this.sound.play("whoosh", { volume: 1.3 });
-								this.add.tween({
-									targets: gameOverText,
-									ease: Phaser.Math.Easing.Bounce.Out,
-									y: this.sys.game.scale.height / 2,
-								});
-
-								this.canMove = false;
-							}
-
-							// Check if the game is won
-							if (this.cards.length === 0) {
-								this.sound.play("whoosh", { volume: 1.3 });
-								this.sound.play("victory");
-
-								this.add.tween({
-									targets: winnerText,
-									ease: Phaser.Math.Easing.Bounce.Out,
-									y: this.sys.game.scale.height / 2,
-								});
-								this.canMove = false;
-							}
-						});
-					} else if (
-						this.cardOpened === undefined &&
-						this.lives > 0 &&
-						this.cards.length > 0
-					) {
-						// If there is not a card opened save the card selected
-						card.flip(() => {
-							this.canMove = true;
-						});
-						this.cardOpened = card;
-					}
-				}
-			}
-		});
-
-		// Text events
-		winnerText.on(Phaser.Input.Events.POINTER_OVER, () => {
-			winnerText.setColor("#FF7F50");
-			this.input.setDefaultCursor("pointer");
-		});
-		winnerText.on(Phaser.Input.Events.POINTER_OUT, () => {
-			winnerText.setColor("#8c7ae6");
-			this.input.setDefaultCursor("default");
-		});
-		winnerText.on(Phaser.Input.Events.POINTER_DOWN, () => {
-			this.sound.play("whoosh", { volume: 1.3 });
-			this.add.tween({
-				targets: winnerText,
-				ease: Phaser.Math.Easing.Bounce.InOut,
-				y: -1000,
-				onComplete: () => {
-					this.restartGame();
-				},
-			});
-		});
-
-		gameOverText.on(Phaser.Input.Events.POINTER_OVER, () => {
-			gameOverText.setColor("#FF7F50");
-			this.input.setDefaultCursor("pointer");
-		});
-
-		gameOverText.on(Phaser.Input.Events.POINTER_OUT, () => {
-			gameOverText.setColor("#8c7ae6");
-			this.input.setDefaultCursor("default");
-		});
-
-		gameOverText.on(Phaser.Input.Events.POINTER_DOWN, () => {
-			this.add.tween({
-				targets: gameOverText,
-				ease: Phaser.Math.Easing.Bounce.InOut,
-				y: -1000,
-				onComplete: () => {
-					this.restartGame();
-				},
-			});
+			this.scene.start("MainMenu");
 		});
 	}
 
