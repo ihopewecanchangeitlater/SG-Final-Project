@@ -57,12 +57,13 @@ export class FindThePairs extends Scene {
 		Hard: { lives: 8, rows: 3, cols: 4 },
 		Expert: { lives: 7, rows: 3, cols: 4 },
 	};
+
 	selectedDifficulty = {
 		lives: 0,
 		rows: 0,
 		cols: 0,
 	};
-	
+
 	helpPanelOpen = false;
 
 	constructor() {
@@ -71,9 +72,12 @@ export class FindThePairs extends Scene {
 		});
 	}
 
-	init(): void {
+	init(data: { level: string }) {
 		this.cameras.main.fadeIn(500);
 		this.volumeButton();
+		if (data.level) {
+			this.selectDifficulty = this.difficultySettings[data.level];
+		}
 	}
 
 	preload() {
@@ -86,8 +90,7 @@ export class FindThePairs extends Scene {
 		this.load.audio("card-mismatch", "audio/card-mismatch.mp3");
 		this.load.audio("card-slide", "audio/card-slide.mp3");
 		this.load.audio("victory", "audio/victory.mp3");
-		
-		this.load.image("background");
+
 		this.load.image("card-back", "images/cards/card-back.png");
 		this.load.image("card-0", "images/cards/card-0.png");
 		this.load.image("card-1", "images/cards/card-1.png");
@@ -98,6 +101,7 @@ export class FindThePairs extends Scene {
 		this.load.image("card-6", "images/cards/card-6.png");
 		this.load.image("card-7", "images/cards/card-7.png");
 
+		this.load.image("ftp-background", "ui/ftp-background.png");
 		this.load.image("volume-icon", "ui/volume-icon.png");
 		this.load.image("volume-icon_off", "ui/volume-icon_off.png");
 		this.load.image("heart", "ui/heart.png");
@@ -481,7 +485,7 @@ export class FindThePairs extends Scene {
 			.image(
 				this.gridConfiguration.x - 63,
 				this.gridConfiguration.y - 77,
-				"background"
+				"ftp-background"
 			)
 			.setOrigin(0)
 			.setAlpha(0)

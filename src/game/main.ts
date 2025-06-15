@@ -1,12 +1,12 @@
-import { Boot } from "./scenes/Boot";
-import { GameOver } from "./scenes/GameOver";
-import { MainMenu } from "./scenes/MainMenu";
 import { AUTO, Game } from "phaser";
-import { Game as GameScene } from "./scenes/Game";
+
 import { Preloader } from "./scenes/Preloader";
+import { MainMenu } from "./scenes/MainMenu";
+import { Game as GameScene } from "./scenes/Game";
 import { DragToCategory } from "./scenes/DragToCategory";
-import { NameThePictureScene } from "./scenes/NameThePictureScene";
 import { FindThePairs } from "./scenes/FindThePairs";
+import { NameThePictureScene } from "./scenes/NameThePictureScene";
+import { GameOver } from "./scenes/GameOver";
 
 //  Find out more information about the Game Config at:
 //  https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
@@ -17,9 +17,7 @@ const config: Phaser.Types.Core.GameConfig = {
 	parent: "game-container",
 	backgroundColor: "#028af8",
 	scene: [
-		Boot,
 		Preloader,
-		Game,
 		MainMenu,
 		DragToCategory,
         		GameScene,
@@ -27,6 +25,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		FindThePairs,
 		NameThePictureScene,
 		GameOver,
+		Game,
 	],
 };
 

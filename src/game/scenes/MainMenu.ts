@@ -1,32 +1,35 @@
-import { Scene, GameObjects } from 'phaser';
+import { Scene, GameObjects } from "phaser";
 
-export class MainMenu extends Scene
-{
-    background: GameObjects.Image;
-    logo: GameObjects.Image;
-    title: GameObjects.Text;
+export class MainMenu extends Scene {
+	background: GameObjects.Image;
+	logo: GameObjects.Image;
+	title: GameObjects.Text;
 
-    constructor ()
-    {
-        super('MainMenu');
-    }
+	constructor() {
+		super("MainMenu");
+	}
 
-    create ()
-    {
-        this.background = this.add.image(512, 384, 'background');
+	create() {
+		this.logo = this.add.image(
+			this.sys.game.scale.width / 2,
+			this.sys.game.scale.height / 2,
+			"logo"
+		);
+		this.logo.setScale(0.5);
 
-        this.logo = this.add.image(512, 300, 'logo');
+		this.title = this.add
+			.text(512, 40, "Main Menu", {
+				fontFamily: "Arial Black",
+				fontSize: 38,
+				color: "#ffffff",
+				stroke: "#000000",
+				strokeThickness: 8,
+				align: "center",
+			})
+			.setOrigin(0.5);
 
-        this.title = this.add.text(512, 460, 'Main Menu', {
-            fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'center'
-        }).setOrigin(0.5);
-
-        this.input.once('pointerdown', () => {
-
-            this.scene.start('Game');
-
-        });
-    }
+		this.input.once("pointerdown", () => {
+			this.scene.start("Game");
+		});
+	}
 }
