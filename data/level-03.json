@@ -1,0 +1,19 @@
+{
+  "categories": ["Καλοκαίρι", "Άνοιξη","Φθινώπορο","Χειμώνας"],
+  "items": [
+    { "name": "Φθινοπωρινό δέντρο 01", "image": "assets/images/season/autumn/autumn-01.png", "category": "Φθινώπορο" },
+    { "name": "Φθινοπωρινό δέντρο 02", "image": "assets/images/season/autumn/autumn-02.png", "category": "Φθινώπορο" },
+    { "name": "Φθινοπωρινό δέντρο 03", "image": "assets/images/season/autumn/autumn-03.png", "category": "Φθινώπορο" },
+    { "name": "Λουλούδι", "image": "assets/images/season/spring/spring-02.png", "category": "Άνοιξη" },
+    { "name": "Ανοιξιάτικο δέντρο 01", "image": "assets/images/season/spring/spring-03.png", "category": "Άνοιξη" },
+    { "name": "Ανοιξιάτικο δέντρο 02", "image": "assets/images/season/spring/spring-04.png", "category": "Άνοιξη" },
+    { "name": "Ανοιξιάτικο δέντρο 03", "image": "assets/images/season/spring/spring-05.png", "category": "Άνοιξη" },
+    { "name": "Ψάρι 01", "image": "assets/images/season/summer/summer-01.png", "category": "Καλοκαίρι" },
+    { "name": "Ψάρι 02", "image": "assets/images/season/summer/summer-02.png", "category": "Καλοκαίρι" },
+    { "name": "Φύκια", "image": "assets/images/season/summer/summer-03.png", "category": "Καλοκαίρι" },
+    { "name": "Άμμος", "image": "assets/images/season/summer/summer-04.png", "category": "Καλοκαίρι" },
+    { "name": "Χειμερινό δέντρο 01", "image": "assets/images/season/winter/winter-01.png", "category": "Χειμώνας" },
+    { "name": "Χειμερινό δέντρο 02", "image": "assets/images/season/winter/winter-02.png", "category": "Χειμώνας" },
+    { "name": "Χειμερινό δέντρο 03", "image": "assets/images/season/winter/winter-03.png", "category": "Χειμώνας" }
+  ]
+}
