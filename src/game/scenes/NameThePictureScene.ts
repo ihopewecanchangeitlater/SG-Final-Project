@@ -80,11 +80,16 @@ export class NameThePictureScene extends Phaser.Scene {
     private checkButton!: Phaser.GameObjects.Text; 
     private feedbackPopup: Phaser.GameObjects.Container | null = null; 
 
+    private levelKey?: string;
+
     constructor() {
         super({ key: 'NameThePictureScene' });
     }
 
-    init() {
+    //init() {
+    init(data: { level?: string } = {}) {
+        this.levelKey = data.level;
+        
         this.gameEnded = false;
         this.score = 0;
         this.itemsToDisplayThisRound = [];

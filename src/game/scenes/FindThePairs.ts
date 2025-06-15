@@ -68,17 +68,20 @@ export class FindThePairs extends Scene {
 
 	constructor() {
 		super({
-			key: "Play",
+			key: "FindThePairs",
 		});
 	}
 
-	init(data: { level: string }) {
-		this.cameras.main.fadeIn(500);
-		this.volumeButton();
-		if (data.level) {
-			this.selectDifficulty = this.difficultySettings[data.level];
-		}
+levelKey?: string;
+
+init(data: { level: string }) {
+	if (data.level) {
+		this.levelKey = data.level;
 	}
+	this.cameras.main.fadeIn(500);
+	this.volumeButton();
+}
+
 
 	preload() {
 		this.load.setPath("assets/");
@@ -109,6 +112,28 @@ export class FindThePairs extends Scene {
 	}
 
 	create(): void {
+		// Αν έχουμε levelKey, ξεκινάμε κατευθείαν το παιχνίδι
+		if (this.levelKey) {
+			switch (this.levelKey) {
+				case 'level-01':
+					this.selectedDifficulty = this.difficultySettings['Easy'];
+					break;
+				case 'level-02':
+					this.selectedDifficulty = this.difficultySettings['Medium'];
+					break;
+				case 'level-03':
+					this.selectedDifficulty = this.difficultySettings['Hard'];
+					break;
+				case 'level-04':
+					this.selectedDifficulty = this.difficultySettings['Expert'];
+					break;
+				default:
+					this.selectedDifficulty = this.difficultySettings['Easy'];
+			}
+			this.startGame();
+			return; // Τερματίζουμε το υπόλοιπο της create
+		}
+
 		const titleText = this.add
 			.text(
 				this.sys.game.scale.width / 2,
