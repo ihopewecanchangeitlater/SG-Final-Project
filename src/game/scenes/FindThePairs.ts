@@ -88,15 +88,15 @@ export class Play extends Scene {
 		this.load.audio("victory", "audio/victory.mp3");
 		
 		this.load.image("background");
-		this.load.image("card-back", "cards/card-back.png");
-		this.load.image("card-0", "cards/card-0.png");
-		this.load.image("card-1", "cards/card-1.png");
-		this.load.image("card-2", "cards/card-2.png");
-		this.load.image("card-3", "cards/card-3.png");
-		this.load.image("card-4", "cards/card-4.png");
-		this.load.image("card-5", "cards/card-5.png");
-		this.load.image("card-6", "cards/card-6.png");
-		this.load.image("card-7", "cards/card-7.png");
+		this.load.image("card-back", "images/cards/card-back.png");
+		this.load.image("card-0", "images/cards/card-0.png");
+		this.load.image("card-1", "images/cards/card-1.png");
+		this.load.image("card-2", "images/cards/card-2.png");
+		this.load.image("card-3", "images/cards/card-3.png");
+		this.load.image("card-4", "images/cards/card-4.png");
+		this.load.image("card-5", "images/cards/card-5.png");
+		this.load.image("card-6", "images/cards/card-6.png");
+		this.load.image("card-7", "images/cards/card-7.png");
 
 		this.load.image("volume-icon", "ui/volume-icon.png");
 		this.load.image("volume-icon_off", "ui/volume-icon_off.png");
