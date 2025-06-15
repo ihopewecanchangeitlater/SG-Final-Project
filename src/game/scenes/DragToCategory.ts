@@ -35,16 +35,37 @@ export class DragToCategory extends Scene {
 
 	preload() {
 		// 1. Φορτώνουμε βασικά assets (ήχοι, icons)
-		this.load.image("basket", "assets/images/objects/basket.png");
-		this.load.image("shelf", "assets/images/objects/shelf.png");
-		this.load.image("soundOn", "assets/ui/volume-icon.png");
-		this.load.image("soundOff", "assets/ui/volume-icon_off.png");
-		this.load.audio("correct", "assets/audio/correct.mp3");
-		this.load.audio("wrong", "assets/audio/wrong.mp3");
-		this.load.audio("victory", "assets/audio/victory.mp3");
+		this.load.image(
+			"basket",
+			`${import.meta.env.BASE_URL}/assets/images/objects/basket.png`
+		);
+		this.load.image(
+			"shelf",
+			`${import.meta.env.BASE_URL}/assets/images/objects/shelf.png`
+		);
+		this.load.image(
+			"soundOn",
+			`${import.meta.env.BASE_URL}/assets/ui/volume-icon.png`
+		);
+		this.load.image(
+			"soundOff",
+			`${import.meta.env.BASE_URL}/assets/ui/volume-icon_off.png`
+		);
+		this.load.audio(
+			"correct",
+			`${import.meta.env.BASE_URL}/assets/audio/correct.mp3`
+		);
+		this.load.audio(
+			"wrong",
+			`${import.meta.env.BASE_URL}/assets/audio/wrong.mp3`
+		);
+		this.load.audio(
+			"victory",
+			`${import.meta.env.BASE_URL}/assets/audio/victory.mp3`
+		);
 
 		// 2. Φορτώνουμε το JSON του επιπέδου (π.χ. level-02.json)
-		this.load.json(this.levelKey, `data/${this.levelKey}.json`);
+		this.load.json(this.levelKey, `${import.meta.env.BASE_URL}/assets/data/${this.levelKey}.json`);
 
 		// 3. Μόλις ολοκληρωθεί το JSON, φορτώνουμε τα images από αυτό
 		this.load.once("complete", () => {
