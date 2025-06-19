@@ -65,7 +65,7 @@ export class DragToCategory extends Scene {
 		);
 
 		// 2. Φορτώνουμε το JSON του επιπέδου (π.χ. level-02.json)
-		this.load.json(this.levelKey, `${import.meta.env.BASE_URL}/assets/data/${this.levelKey}.json`);
+		this.load.json(this.levelKey, `../../data/${this.levelKey}.json`);
 
 		// 3. Μόλις ολοκληρωθεί το JSON, φορτώνουμε τα images από αυτό
 		this.load.once("complete", () => {
