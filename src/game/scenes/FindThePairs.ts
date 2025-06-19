@@ -82,7 +82,10 @@ export class FindThePairs extends Scene {
 	}
 
 	preload() {
-		this.load.setPath(`${import.meta.env.BASE_URL}/assets/audio`);
+		const isDev = process.env.NODE_ENV === "development";
+		const baseUrl = isDev ? "" : import.meta.env.BASE_URL;
+		
+		this.load.setPath(`${baseUrl}/assets/audio`);
 		this.load.audio("theme-song", "fat-caps-audionatix.mp3");
 		this.load.audio("whoosh", "whoosh.mp3");
 		this.load.audio("card-flip", "card-flip.mp3");
@@ -91,13 +94,13 @@ export class FindThePairs extends Scene {
 		this.load.audio("card-slide", "card-slide.mp3");
 		this.load.audio("victory", "victory.mp3");
 
-		this.load.setPath(`${import.meta.env.BASE_URL}/assets/images/cards`);
+		this.load.setPath(`${baseUrl}/assets/images/cards`);
 		this.load.image("card-back", "card-back.png");
 		this.cardNames.forEach((cardName) => {
 			this.load.image(cardName, `${cardName}.png`);
 		});
 
-		this.load.setPath(`${import.meta.env.BASE_URL}/assets/ui`);
+		this.load.setPath(`${baseUrl}/assets/ui`);
 		this.load.image("volume-icon", "volume-icon.png");
 		this.load.image("volume-icon_off", "volume-icon_off.png");
 		this.load.image("heart", "heart.png");

@@ -11,6 +11,234 @@ interface LevelData {
 	items: ItemData[];
 }
 
+const levels: any = {
+	"level-01": {
+		categories: ["Ζώο", "Φαγητό"],
+		items: [
+			{
+				name: "Κατσίκα",
+				image: "assets/images/animal/goat.png",
+				category: "Ζώο",
+			},
+			{
+				name: "Κουνέλι",
+				image: "assets/images/animal/rabbit.png",
+				category: "Ζώο",
+			},
+			{
+				name: "Μήλο",
+				image: "assets/images/food/fruits/apple.png",
+				category: "Φαγητό",
+			},
+			{
+				name: "Κεράσια",
+				image: "assets/images/food/fruits/cherries.png",
+				category: "Φαγητό",
+			},
+			{
+				name: "Γουρούνι",
+				image: "assets/images/animal/pig.png",
+				category: "Ζώο",
+			},
+			{
+				name: "Σκύλος",
+				image: "assets/images/animal/dog.png",
+				category: "Ζώο",
+			},
+			{
+				name: "Ελέφαντας",
+				image: "assets/images/animal/elephant.png",
+				category: "Ζώο",
+			},
+			{
+				name: "Αγελάδα",
+				image: "assets/images/animal/cow.png",
+				category: "Ζώο",
+			},
+			{
+				name: "Καμηλοπάρδαλη",
+				image: "assets/images/animal/giraffe.png",
+				category: "Ζώο",
+			},
+			{
+				name: "Κρουασάν",
+				image: "assets/images/food/sweets/croissant.png",
+				category: "Φαγητό",
+			},
+			{
+				name: "Μπισκότο",
+				image: "assets/images/food/sweets/cookie.png",
+				category: "Φαγητό",
+			},
+			{
+				name: "Παγωτό",
+				image: "assets/images/food/sweets/ice-cream.png",
+				category: "Φαγητό",
+			},
+			{
+				name: "Μπέικον",
+				image: "assets/images/food/meat/bacon.png",
+				category: "Φαγητό",
+			},
+			{
+				name: "Λουκάνικο",
+				image: "assets/images/food/meat/meat-sausage.png",
+				category: "Φαγητό",
+			},
+		],
+	},
+	"level-02": {
+		categories: ["Γλυκό", "Φρούτο", "Κρέας"],
+		items: [
+			{
+				name: "Σταφύλι",
+				image: "assets/images/food/fruits/grapes.png",
+				category: "Φρούτο",
+			},
+			{
+				name: "Μήλο",
+				image: "assets/images/food/fruits/apple.png",
+				category: "Φρούτο",
+			},
+			{
+				name: "Κεράσια",
+				image: "assets/images/food/fruits/cherries.png",
+				category: "Φρούτο",
+			},
+			{
+				name: "Ανανάς",
+				image: "assets/images/food/fruits/pineapple.png",
+				category: "Φρούτο",
+			},
+			{
+				name: "Αχλάδι",
+				image: "assets/images/food/fruits/pear.png",
+				category: "Φρούτο",
+			},
+			{
+				name: "Μπριζόλα",
+				image: "assets/images/food/meat/meat-raw.png",
+				category: "Κρέας",
+			},
+			{
+				name: "Γαλοπούλα",
+				image: "assets/images/food/meat/turkey.png",
+				category: "Κρέας",
+			},
+			{
+				name: "Ντόνατ",
+				image: "assets/images/food/sweets/donut-sprinkles.png",
+				category: "Γλυκό",
+			},
+			{
+				name: "Τηγανίτες",
+				image: "assets/images/food/sweets/pancakes.png",
+				category: "Γλυκό",
+			},
+			{
+				name: "Κρουασάν",
+				image: "assets/images/food/sweets/croissant.png",
+				category: "Γλυκό",
+			},
+			{
+				name: "Μπισκότο",
+				image: "assets/images/food/sweets/cookie.png",
+				category: "Γλυκό",
+			},
+			{
+				name: "Παγωτό",
+				image: "assets/images/food/sweets/ice-cream.png",
+				category: "Γλυκό",
+			},
+			{
+				name: "Μπέικον",
+				image: "assets/images/food/meat/bacon.png",
+				category: "Κρέας",
+			},
+			{
+				name: "Λουκάνικο",
+				image: "assets/images/food/meat/meat-sausage.png",
+				category: "Κρέας",
+			},
+		],
+	},
+	"level-03": {
+		categories: ["Καλοκαίρι", "Άνοιξη", "Φθινώπορο", "Χειμώνας"],
+		items: [
+			{
+				name: "Φθινοπωρινό δέντρο 01",
+				image: "assets/images/season/autumn/autumn-01.png",
+				category: "Φθινώπορο",
+			},
+			{
+				name: "Φθινοπωρινό δέντρο 02",
+				image: "assets/images/season/autumn/autumn-02.png",
+				category: "Φθινώπορο",
+			},
+			{
+				name: "Φθινοπωρινό δέντρο 03",
+				image: "assets/images/season/autumn/autumn-03.png",
+				category: "Φθινώπορο",
+			},
+			{
+				name: "Λουλούδι",
+				image: "assets/images/season/spring/spring-02.png",
+				category: "Άνοιξη",
+			},
+			{
+				name: "Ανοιξιάτικο δέντρο 01",
+				image: "assets/images/season/spring/spring-03.png",
+				category: "Άνοιξη",
+			},
+			{
+				name: "Ανοιξιάτικο δέντρο 02",
+				image: "assets/images/season/spring/spring-04.png",
+				category: "Άνοιξη",
+			},
+			{
+				name: "Ανοιξιάτικο δέντρο 03",
+				image: "assets/images/season/spring/spring-05.png",
+				category: "Άνοιξη",
+			},
+			{
+				name: "Ψάρι 01",
+				image: "assets/images/season/summer/summer-01.png",
+				category: "Καλοκαίρι",
+			},
+			{
+				name: "Ψάρι 02",
+				image: "assets/images/season/summer/summer-02.png",
+				category: "Καλοκαίρι",
+			},
+			{
+				name: "Φύκια",
+				image: "assets/images/season/summer/summer-03.png",
+				category: "Καλοκαίρι",
+			},
+			{
+				name: "Άμμος",
+				image: "assets/images/season/summer/summer-04.png",
+				category: "Καλοκαίρι",
+			},
+			{
+				name: "Χειμερινό δέντρο 01",
+				image: "assets/images/season/winter/winter-01.png",
+				category: "Χειμώνας",
+			},
+			{
+				name: "Χειμερινό δέντρο 02",
+				image: "assets/images/season/winter/winter-02.png",
+				category: "Χειμώνας",
+			},
+			{
+				name: "Χειμερινό δέντρο 03",
+				image: "assets/images/season/winter/winter-03.png",
+				category: "Χειμώνας",
+			},
+		],
+	},
+};
+
 export class DragToCategory extends Scene {
 	private levelKey: string;
 	private levelData!: LevelData;
@@ -34,61 +262,34 @@ export class DragToCategory extends Scene {
 	}
 
 	preload() {
+		const isDev = process.env.NODE_ENV === "development";
+		const baseUrl = isDev ? "" : import.meta.env.BASE_URL;
 		// 1. Φορτώνουμε βασικά assets (ήχοι, icons)
-		this.load.image(
-			"basket",
-			`${import.meta.env.BASE_URL}/assets/images/objects/basket.png`
-		);
-		this.load.image(
-			"shelf",
-			`${import.meta.env.BASE_URL}/assets/images/objects/shelf.png`
-		);
-		this.load.image(
-			"soundOn",
-			`${import.meta.env.BASE_URL}/assets/ui/volume-icon.png`
-		);
-		this.load.image(
-			"soundOff",
-			`${import.meta.env.BASE_URL}/assets/ui/volume-icon_off.png`
-		);
-		this.load.audio(
-			"correct",
-			`${import.meta.env.BASE_URL}/assets/audio/correct.mp3`
-		);
-		this.load.audio(
-			"wrong",
-			`${import.meta.env.BASE_URL}/assets/audio/wrong.mp3`
-		);
-		this.load.audio(
-			"victory",
-			`${import.meta.env.BASE_URL}/assets/audio/victory.mp3`
-		);
+		this.load.image("basket", `${baseUrl}/assets/images/objects/basket.png`);
+		this.load.image("shelf", `${baseUrl}/assets/images/objects/shelf.png`);
+		this.load.image("soundOn", `${baseUrl}/assets/ui/volume-icon.png`);
+		this.load.image("soundOff", `${baseUrl}/assets/ui/volume-icon_off.png`);
+		this.load.audio("correct", `${baseUrl}/assets/audio/correct.mp3`);
+		this.load.audio("wrong", `${baseUrl}/assets/audio/wrong.mp3`);
+		this.load.audio("victory", `${baseUrl}/assets/audio/victory.mp3`);
 
 		// 2. Φορτώνουμε το JSON του επιπέδου (π.χ. level-02.json)
-		this.load.json(this.levelKey, `../../data/${this.levelKey}.json`);
+		this.levelData = levels[this.levelKey];
 
-		// 3. Μόλις ολοκληρωθεί το JSON, φορτώνουμε τα images από αυτό
+		if (!this.levelData) {
+			console.error("Level data not found");
+			this.scene.start("Game");
+			return;
+		}
+
+		// Φορτώνουμε δυναμικά τα images από το JSON
+		this.levelData.items.forEach((item) => {
+			this.load.image(item.name, item.image);
+		});
+
+		// Όταν φορτωθούν και τα images, κάνε setup
 		this.load.once("complete", () => {
-			this.levelData = this.cache.json.get(this.levelKey) as LevelData;
-
-			if (!this.levelData) {
-				console.error("Level data not found");
-				this.scene.start("Game");
-				return;
-			}
-
-			// Φορτώνουμε δυναμικά τα images από το JSON
-			this.levelData.items.forEach((item) => {
-				this.load.image(item.name, item.image);
-			});
-
-			// Όταν φορτωθούν και τα images, κάνε setup
-			this.load.once("complete", () => {
-				this.setupLevel();
-			});
-
-			// Ξεκίνα φόρτωση εικόνων
-			this.load.start();
+			this.setupLevel();
 		});
 
 		// Ξεκίνα την αρχική φόρτωση JSON + στατικών assets

@@ -31,87 +31,69 @@ interface ItemData {
 	imageWidth?: number;
 	imageHeight?: number;
 }
+const isDev = process.env.NODE_ENV === "development";
+const baseUrl = isDev ? "" : import.meta.env.BASE_URL;
 
 const masterItemsData: ItemData[] = [
 	/* ... your item data ... */
 	{
 		id: 0,
 		imageKey: "dog",
-		imagePath: `${
-			import.meta.env.BASE_URL
-		}/assets/images/name-the-picture/adorable-animal-breed-981062.jpg`,
+		imagePath: `${baseUrl}/assets/images/name-the-picture/adorable-animal-breed-981062.jpg`,
 		correctAnswer: decodeHtmlEntities("Σκύλος"),
 	},
 	{
 		id: 1,
 		imageKey: "car",
-		imagePath: `${
-			import.meta.env.BASE_URL
-		}/assets/images/name-the-picture/adventure-automobile-car-849835.jpg`,
+		imagePath: `${baseUrl}/assets/images/name-the-picture/adventure-automobile-car-849835.jpg`,
 		correctAnswer: decodeHtmlEntities("Αμάξι"),
 	},
 	{
 		id: 2,
 		imageKey: "cat",
-		imagePath: `${
-			import.meta.env.BASE_URL
-		}/assets/images/name-the-picture/manja-vitolic-gKXKBY-C-Dk-unsplash.jpg`,
+		imagePath: `${baseUrl}/assets/images/name-the-picture/manja-vitolic-gKXKBY-C-Dk-unsplash.jpg`,
 		correctAnswer: decodeHtmlEntities("Γάτα"),
 	},
 	{
 		id: 3,
 		imageKey: "flag",
-		imagePath: `${
-			import.meta.env.BASE_URL
-		}/assets/images/name-the-picture/america-american-flag-blue-sky-951382.jpg`,
+		imagePath: `${baseUrl}/assets/images/name-the-picture/america-american-flag-blue-sky-951382.jpg`,
 		correctAnswer: decodeHtmlEntities("Σημαία"),
 	},
 	{
 		id: 4,
 		imageKey: "camera",
-		imagePath: `${
-			import.meta.env.BASE_URL
-		}/assets/images/name-the-picture/aperture-blur-bokeh-1561081.jpg`,
+		imagePath: `${baseUrl}/assets/images/name-the-picture/aperture-blur-bokeh-1561081.jpg`,
 		correctAnswer: decodeHtmlEntities("Φωτογραφική μηχανή"),
 	},
 	{
 		id: 5,
 		imageKey: "coffee",
-		imagePath: `${
-			import.meta.env.BASE_URL
-		}/assets/images/name-the-picture/art-blur-cappuccino-302899.jpg`,
+		imagePath: `${baseUrl}/assets/images/name-the-picture/art-blur-cappuccino-302899.jpg`,
 		correctAnswer: decodeHtmlEntities("Φλυτζάνι με καφέ"),
 	},
 	{
 		id: 6,
 		imageKey: "biscuits",
-		imagePath: `${
-			import.meta.env.BASE_URL
-		}/assets/images/name-the-picture/background-black-colors-239581.jpg`,
+		imagePath: `${baseUrl}/assets/images/name-the-picture/background-black-colors-239581.jpg`,
 		correctAnswer: decodeHtmlEntities("Μπισκότα"),
 	},
 	{
 		id: 7,
 		imageKey: "sandwich",
-		imagePath: `${
-			import.meta.env.BASE_URL
-		}/assets/images/name-the-picture/beef-blur-bread-1053769.jpg`,
+		imagePath: `${baseUrl}/assets/images/name-the-picture/beef-blur-bread-1053769.jpg`,
 		correctAnswer: decodeHtmlEntities("Χάμπουγκερ-Σάντουιτς"),
 	},
 	{
 		id: 8,
 		imageKey: "watermelon",
-		imagePath: `${
-			import.meta.env.BASE_URL
-		}/assets/images/name-the-picture/close-up-delicious-fruit-1068534.jpg`,
+		imagePath: `${baseUrl}/assets/images/name-the-picture/close-up-delicious-fruit-1068534.jpg`,
 		correctAnswer: decodeHtmlEntities("Καρπούζι"),
 	},
 	{
 		id: 9,
 		imageKey: "motorbike",
-		imagePath: `${
-			import.meta.env.BASE_URL
-		}/assets/images/name-the-picture/bike-broken-city-1045535.jpg`,
+		imagePath: `${baseUrl}/assets/images/name-the-picture/bike-broken-city-1045535.jpg`,
 		correctAnswer: decodeHtmlEntities("Μηχανή"),
 		imageHeight: 100,
 	},
@@ -160,6 +142,8 @@ export class NameThePictureScene extends Phaser.Scene {
 
 	//init() {
 	init(data: { level?: string } = {}) {
+		this.backButton();
+
 		this.levelKey = data.level;
 
 		this.gameEnded = false;
@@ -653,5 +637,28 @@ export class NameThePictureScene extends Phaser.Scene {
 			this.scene.start("Game");
 		});
 		this.feedbackPopup.add(closeButton);
+	}
+
+	backButton(): void {
+		const mainMenuButton = this.add
+			.text(25, 100, "Επιστροφή στο Μενού")
+			.setStyle({
+				fontSize: "16px",
+				color: "#FFFFFF",
+				backgroundColor: "#28a745",
+				padding: { x: 10, y: 5 },
+			})
+			.setName("back-button")
+			.setInteractive();
+
+		mainMenuButton.on(Phaser.Input.Events.POINTER_OVER, () => {
+			this.input.setDefaultCursor("pointer");
+		});
+		mainMenuButton.on(Phaser.Input.Events.POINTER_OUT, () => {
+			this.input.setDefaultCursor("default");
+		});
+		mainMenuButton.on(Phaser.Input.Events.POINTER_DOWN, () => {
+			this.scene.start("MainMenu");
+		});
 	}
 }
