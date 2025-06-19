@@ -84,7 +84,7 @@ export class FindThePairs extends Scene {
 	preload() {
 		const isDev = process.env.NODE_ENV === "development";
 		const baseUrl = isDev ? "" : import.meta.env.BASE_URL;
-		
+
 		this.load.setPath(`${baseUrl}/assets/audio`);
 		this.load.audio("theme-song", "fat-caps-audionatix.mp3");
 		this.load.audio("whoosh", "whoosh.mp3");
@@ -242,7 +242,7 @@ export class FindThePairs extends Scene {
 
 					// remove card destroyed from array
 					this.cards = this.cards.filter(
-						(cardLocal) => cardLocal.cardName !== card.cardName
+						(cardLocal) => cardLocal !== this.cardOpened && cardLocal !== card
 					);
 					// reset history card opened
 					this.cardOpened = undefined;
@@ -265,10 +265,11 @@ export class FindThePairs extends Scene {
 					});
 					this.lives -= 1;
 					// Flip last card selected and flip the card opened from history and reset history
-					card.flip();
-					this.cardOpened?.flip(() => {
-						this.cardOpened = undefined;
-						this.canMove = true;
+					card.flip(() => {
+						this.cardOpened?.flip(() => {
+							this.cardOpened = undefined;
+							this.canMove = true;
+						});
 					});
 				}
 
