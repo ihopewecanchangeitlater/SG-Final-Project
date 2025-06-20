@@ -19,8 +19,8 @@ const config: Phaser.Types.Core.GameConfig = {
 	scene: [
 		Preloader,
 		MainMenu,
-		DragToCategory,
 		GameScene,
+		DragToCategory,
 		FindThePairs,
 		NameThePictureScene,
 		GameOver,

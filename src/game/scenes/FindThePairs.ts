@@ -159,7 +159,7 @@ export class FindThePairs extends Scene {
 				this.input.setDefaultCursor("default");
 			});
 			card.gameObject.on(Phaser.Input.Events.POINTER_DOWN, () => {
-				this.gameLogic(card, hearts, gameOverText);
+				this.gameLogic(card, hearts, gameOverText, winnerText);
 			});
 		});
 
@@ -187,7 +187,7 @@ export class FindThePairs extends Scene {
 				ease: Phaser.Math.Easing.Bounce.InOut,
 				y: -1000,
 				onComplete: () => {
-					this.restartGame();
+					this.backButton();
 				},
 			});
 		});
@@ -217,7 +217,8 @@ export class FindThePairs extends Scene {
 	gameLogic(
 		card: Card,
 		hearts: HeartList,
-		gameOverText: GameObjects.Text
+		gameOverText: GameObjects.Text,
+		winnerText: GameObjects.Text
 	): void {
 		this.canMove = false;
 
@@ -233,82 +234,80 @@ export class FindThePairs extends Scene {
 			}
 
 			card.flip(() => {
-				if (this.cardOpened?.cardName === card.cardName) {
-					// ------- Match -------
-					this.sound.play("card-match");
-					// Destroy card selected and card opened from history
-					this.cardOpened.destroy();
-					card.destroy();
+				setTimeout(() => {
+					if (this.cardOpened?.cardName === card.cardName) {
+						// ------- Match -------
+						this.sound.play("card-match");
+						// Destroy card selected and card opened from history
+						this.cardOpened.destroy();
+						card.destroy();
 
-					// remove card destroyed from array
-					this.cards = this.cards.filter(
-						(cardLocal) => cardLocal !== this.cardOpened && cardLocal !== card
-					);
-					// reset history card opened
-					this.cardOpened = undefined;
-					this.canMove = true;
-				} else {
-					// ------- No match -------
-					this.sound.play("card-mismatch");
-					this.cameras.main.shake(600, 0.01);
-					// remove life and heart
-					const lastHeart = hearts[hearts.length - 1];
-					this.add.tween({
-						targets: lastHeart,
-						ease: Phaser.Math.Easing.Expo.InOut,
-						duration: 1000,
-						y: -1000,
-						onComplete: () => {
-							lastHeart.destroy();
-							hearts.pop();
-						},
-					});
-					this.lives -= 1;
-					// Flip last card selected and flip the card opened from history and reset history
-					card.flip(() => {
-						this.cardOpened?.flip(() => {
-							this.cardOpened = undefined;
-							this.canMove = true;
+						// remove card destroyed from array
+						this.cards = this.cards.filter(
+							(cardLocal) => cardLocal !== this.cardOpened && cardLocal !== card
+						);
+						// reset history card opened
+						this.cardOpened = undefined;
+						this.canMove = true;
+					} else {
+						// ------- No match -------
+						this.sound.play("card-mismatch");
+						this.cameras.main.shake(600, 0.01);
+						// remove life and heart
+						const lastHeart = hearts[hearts.length - 1];
+						this.add.tween({
+							targets: lastHeart,
+							ease: Phaser.Math.Easing.Expo.InOut,
+							duration: 1000,
+							y: -1000,
+							onComplete: () => {
+								lastHeart.destroy();
+								hearts.pop();
+							},
 						});
-					});
-				}
+						this.lives -= 1;
+						// Flip last card selected and flip the card opened from history and reset history
+						card.flip(() => {
+							this.cardOpened?.flip(() => {
+								this.cardOpened = undefined;
+								this.canMove = true;
+							});
+						});
+					}
 
-				// Check if the game is over
-				if (this.lives === 0) {
-					// Show Game Over text
-					this.sound.play("whoosh", { volume: 1.3 });
-					this.add.tween({
-						targets: gameOverText,
-						ease: Phaser.Math.Easing.Bounce.Out,
-						y: this.sys.game.scale.height / 2,
-					});
+					// Check if the game is over
+					if (this.lives === 0) {
+						// Show Game Over text
+						this.sound.play("whoosh", { volume: 1.3 });
+						this.add.tween({
+							targets: gameOverText,
+							ease: Phaser.Math.Easing.Bounce.Out,
+							y: this.sys.game.scale.height / 2,
+						});
 
-					this.canMove = false;
-				}
+						this.canMove = false;
+					}
 
-				// Check if the game is won
-				if (this.cards.length === 0) {
-					this.sound.play("whoosh", { volume: 1.3 });
-					this.sound.play("victory");
+					// Check if the game is won
+					if (this.cards.length === 0) {
+						this.sound.play("whoosh", { volume: 1.3 });
+						this.sound.play("victory");
 
-					this.add.tween({
-						targets: winnerText,
-						ease: Phaser.Math.Easing.Bounce.Out,
-						y: this.sys.game.scale.height / 2,
-					});
-					this.canMove = false;
-				}
+						this.add.tween({
+							targets: winnerText,
+							ease: Phaser.Math.Easing.Bounce.Out,
+							y: this.sys.game.scale.height / 2,
+						});
+						this.canMove = false;
+					}
+				}, 100); // Add a small delay for better UX
 			});
-		} else if (
-			this.cardOpened === undefined &&
-			this.lives > 0 &&
-			this.cards.length > 0
-		) {
+		} else {
 			// If there is not a card opened save the card selected
+			this.cardOpened = card;
 			card.flip(() => {
 				this.canMove = true;
 			});
-			this.cardOpened = card;
 		}
 	}
 
@@ -583,70 +582,40 @@ export class FindThePairs extends Scene {
 		cardName: string;
 		scale?: number;
 	}): Card {
-		let isFlipping = false;
-		const rotation = { y: 0 };
-
 		const backTexture = "card-back";
 
-		const card: any = scene.add
+		const card = scene.add
 			.plane(x, y, backTexture)
-			.setName(cardName)
-			.setInteractive()
-			.setScale(scale);
+			.setScale(scale)
+			.setInteractive();
 
-		// start with the card face down
-		card.modelRotationY = 180;
+		let isFlipped = false;
+		let destroyed = false;
 
-		const flipCard = (callbackComplete?: () => void) => {
-			if (isFlipping) {
-				return;
-			}
-			scene.add.tween({
-				targets: [rotation],
-				y: rotation.y === 180 ? 0 : 180,
-				ease: Phaser.Math.Easing.Expo.Out,
-				duration: 500,
-				onStart: () => {
-					isFlipping = true;
-					scene.sound.play("card-flip");
-					scene.tweens.chain({
-						targets: card,
-						ease: Phaser.Math.Easing.Expo.InOut,
-						tweens: [
-							{
-								duration: 200,
-								scale: 1.1,
-							},
-							{
-								duration: 300,
-								scale: 1,
-							},
-						],
-					});
-				},
-				onUpdate: () => {
-					// card.modelRotation.y = Phaser.Math.DegToRad(180) + Phaser.Math.DegToRad(rotation.y);
-					card.rotateY = 180 + rotation.y;
-					const cardRotation = Math.floor(card.rotateY) % 360;
-					if (
-						(cardRotation >= 0 && cardRotation <= 90) ||
-						(cardRotation >= 270 && cardRotation <= 359)
-					) {
-						card.setTexture(frontTexture);
-					} else {
-						card.setTexture(backTexture);
-					}
-				},
+		const flip = (onComplete?: () => void) => {
+			if (destroyed) return;
+			scene.tweens.add({
+				targets: card,
+				scaleX: 0,
+				duration: 150,
 				onComplete: () => {
-					isFlipping = false;
-					if (callbackComplete) {
-						callbackComplete();
-					}
+					isFlipped = !isFlipped;
+					card.setTexture(isFlipped ? frontTexture : backTexture);
+					scene.tweens.add({
+						targets: card,
+						scaleX: scale,
+						duration: 150,
+						onComplete: () => {
+							scene.sound.play("card-flip", { volume: 0.8 });
+							if (onComplete) onComplete();
+						},
+					});
 				},
 			});
 		};
 
 		const destroy = () => {
+			destroyed = true;
 			scene.add.tween({
 				targets: [card],
 				y: card.y - 1000,
@@ -660,7 +629,7 @@ export class FindThePairs extends Scene {
 
 		return {
 			gameObject: card,
-			flip: flipCard,
+			flip,
 			destroy,
 			cardName,
 		};
